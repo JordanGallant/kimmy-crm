@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Save } from "lucide-react";
+import { Save, Palette } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 
 type Profile = {
   id: string;
@@ -18,10 +19,16 @@ type Profile = {
   avatar_url: string | null;
 };
 
+const themes = [
+  { id: "default" as const, name: "Default", color: "bg-zinc-800" },
+  { id: "pink" as const, name: "Pink", color: "bg-pink-500" },
+];
+
 export function SettingsForm({ profile }: { profile: Profile | null }) {
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
   const supabase = createClient();
 
@@ -92,6 +99,34 @@ export function SettingsForm({ profile }: { profile: Profile | null }) {
               {saving ? "Saving..." : "Save Changes"}
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Palette className="size-5" />
+            Appearance
+          </CardTitle>
+          <CardDescription>Choose your colour theme</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-4">
+            {themes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all ${
+                  theme === t.id
+                    ? "border-primary bg-accent"
+                    : "border-border hover:border-muted-foreground/30"
+                }`}
+              >
+                <div className={`size-8 rounded-full ${t.color}`} />
+                <span className="font-medium text-sm">{t.name}</span>
+              </button>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
