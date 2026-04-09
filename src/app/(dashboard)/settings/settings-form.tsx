@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Save, Palette } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 
@@ -15,7 +14,6 @@ type Profile = {
   id: string;
   email: string;
   full_name: string | null;
-  role: string;
   avatar_url: string | null;
 };
 
@@ -76,12 +74,6 @@ export function SettingsForm({ profile }: { profile: Profile | null }) {
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" value={profile?.email || ""} disabled />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <div>
-                <Badge variant="secondary">{profile?.role || "user"}</Badge>
-              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>

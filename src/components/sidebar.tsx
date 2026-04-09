@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -11,6 +12,8 @@ import {
   Users,
   Settings,
   LogOut,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,19 +28,23 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function Sidebar({ user, profile }: SidebarProps) {
+function SidebarContent({
+  user,
+  profile,
+  onNavigate,
+}: SidebarProps & { onNavigate?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
-  const supabase = createClient();
 
   const handleSignOut = async () => {
+    const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
   };
 
   return (
-    <aside className="w-64 border-r border-border bg-card flex flex-col h-full">
+    <>
       <div className="p-6 flex items-center gap-3">
         <Image src="/logo.png" alt="Kimmy CRM" width={40} height={40} className="rounded-lg" />
         <h1 className="text-xl font-bold text-primary">Kimmy CRM</h1>
@@ -45,12 +52,14 @@ export function Sidebar({ user, profile }: SidebarProps) {
       <Separator />
       <nav className="flex-1 p-4 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href ||
+          const isActive =
+            pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                 isActive
@@ -71,15 +80,72 @@ export function Sidebar({ user, profile }: SidebarProps) {
             {(profile?.full_name?.[0] || user.email?.[0] || "U").toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{profile?.full_name || "User"}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            <p className="text-sm font-medium truncate">
+              {profile?.full_name || "User"}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user.email}
+            </p>
           </div>
         </div>
-        <Button variant="ghost" className="w-full justify-start gap-3" onClick={handleSignOut}>
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3"
+          onClick={handleSignOut}
+        >
           <LogOut className="size-4" />
           Sign Out
         </Button>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export function Sidebar({ user, profile }: SidebarProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {/* Mobile top bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center gap-3 border-b border-border bg-card px-4 py-3">
+        <button onClick={() => setOpen(true)}>
+          <Menu className="size-6" />
+        </button>
+        <Image src="/logo.png" alt="Kimmy CRM" width={28} height={28} className="rounded-md" />
+        <h1 className="text-lg font-bold text-primary">Kimmy CRM</h1>
+      </div>
+
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/40"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Mobile slide-out */}
+      <aside
+        className={cn(
+          "md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-card flex flex-col transition-transform duration-200",
+          open ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="absolute top-4 right-4">
+          <button onClick={() => setOpen(false)}>
+            <X className="size-5" />
+          </button>
+        </div>
+        <SidebarContent
+          user={user}
+          profile={profile}
+          onNavigate={() => setOpen(false)}
+        />
+      </aside>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex w-64 border-r border-border bg-card flex-col h-full">
+        <SidebarContent user={user} profile={profile} />
+      </aside>
+    </>
   );
 }
