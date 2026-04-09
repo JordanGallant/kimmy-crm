@@ -36,7 +36,6 @@ import {
   Mail,
   Phone,
   User,
-  MessageSquare,
 } from "lucide-react";
 
 type Contact = {
@@ -108,10 +107,10 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
   });
   const [saving, setSaving] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const handleSave = async () => {
     setSaving(true);
+    const supabase = createClient();
     try {
       const { error } = await supabase
         .from("partners")
@@ -135,6 +134,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this partner?")) return;
+    const supabase = createClient();
     const { error } = await supabase.from("partners").delete().eq("id", partner.id);
     if (error) {
       alert(error.message);
@@ -147,6 +147,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
   const handleAddContact = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const supabase = createClient();
     try {
       const { error } = await supabase.from("contacts").insert({
         partner_id: partner.id,
@@ -169,6 +170,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
 
   const handleDeleteContact = async (contactId: string) => {
     if (!confirm("Delete this contact?")) return;
+    const supabase = createClient();
     await supabase.from("contacts").delete().eq("id", contactId);
     router.refresh();
   };
@@ -176,6 +178,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
   const handleAddActivity = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const supabase = createClient();
     try {
       const { error } = await supabase.from("activities").insert({
         partner_id: partner.id,
@@ -195,25 +198,28 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="/partners">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="size-4" />
-          </Button>
-        </Link>
-        <div className="flex-1">
-          <h2 className="text-3xl font-bold tracking-tight">
-            {partner.organisation_name}
-          </h2>
-          <p className="text-muted-foreground">
-            Added {new Date(partner.created_at).toLocaleDateString()}
-          </p>
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-start gap-3">
+          <Link href="/partners">
+            <Button variant="ghost" size="icon" className="shrink-0 mt-1">
+              <ArrowLeft className="size-4" />
+            </Button>
+          </Link>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-3xl font-bold tracking-tight break-words">
+              {partner.organisation_name}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Added {new Date(partner.created_at).toLocaleDateString()}
+            </p>
+          </div>
         </div>
         <div className="flex gap-2">
           {editing ? (
             <>
-              <Button onClick={handleSave} disabled={saving}>
+              <Button onClick={handleSave} disabled={saving} className="flex-1 sm:flex-none">
                 <Save className="size-4 mr-2" />
                 {saving ? "Saving..." : "Save"}
               </Button>
@@ -223,11 +229,11 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={() => setEditing(true)}>
+              <Button variant="outline" onClick={() => setEditing(true)} className="flex-1 sm:flex-none">
                 <Edit className="size-4 mr-2" />
                 Edit
               </Button>
-              <Button variant="destructive" onClick={handleDelete}>
+              <Button variant="destructive" onClick={handleDelete} className="flex-1 sm:flex-none">
                 <Trash2 className="size-4 mr-2" />
                 Delete
               </Button>
@@ -236,11 +242,131 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-2 space-y-6">
+      {/* Content — contacts first on mobile (above details) */}
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
+        {/* Contacts — shows first on mobile */}
+        <div className="order-first md:order-last space-y-4 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Details</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <CardTitle className="text-base">Contacts</CardTitle>
+              <Dialog open={contactDialog} onOpenChange={setContactDialog}>
+                <DialogTrigger>
+                  <Button size="sm">
+                    <Plus className="size-4 mr-1" />
+                    Add
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Add Contact</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleAddContact} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Name</Label>
+                      <Input
+                        value={contactForm.name}
+                        onChange={(e) =>
+                          setContactForm({ ...contactForm, name: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Email</Label>
+                      <Input
+                        type="email"
+                        value={contactForm.email}
+                        onChange={(e) =>
+                          setContactForm({ ...contactForm, email: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Phone</Label>
+                      <Input
+                        type="tel"
+                        value={contactForm.phone}
+                        onChange={(e) =>
+                          setContactForm({ ...contactForm, phone: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Job Title</Label>
+                      <Input
+                        value={contactForm.job_title}
+                        onChange={(e) =>
+                          setContactForm({ ...contactForm, job_title: e.target.value })
+                        }
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={saving}>
+                      {saving ? "Saving..." : "Add Contact"}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </CardHeader>
+            <CardContent>
+              {partner.contacts.length > 0 ? (
+                <div className="space-y-3">
+                  {partner.contacts.map((contact) => (
+                    <div
+                      key={contact.id}
+                      className="flex items-start justify-between p-3 rounded-lg bg-muted/50"
+                    >
+                      <div className="space-y-1 min-w-0 flex-1">
+                        {contact.name && (
+                          <div className="flex items-center gap-2 text-sm font-medium">
+                            <User className="size-3 shrink-0" />
+                            <span className="truncate">{contact.name}</span>
+                          </div>
+                        )}
+                        {contact.email && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Mail className="size-3 shrink-0" />
+                            <a
+                              href={`mailto:${contact.email}`}
+                              className="hover:text-primary truncate"
+                            >
+                              {contact.email.trim()}
+                            </a>
+                          </div>
+                        )}
+                        {contact.phone && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Phone className="size-3 shrink-0" />
+                            <a href={`tel:${contact.phone}`} className="hover:text-primary">
+                              {contact.phone}
+                            </a>
+                          </div>
+                        )}
+                        {contact.job_title && (
+                          <p className="text-xs text-muted-foreground">{contact.job_title}</p>
+                        )}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        onClick={() => handleDeleteContact(contact.id)}
+                        className="shrink-0"
+                      >
+                        <Trash2 className="size-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">No contacts yet.</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Details & Activity */}
+        <div className="md:col-span-2 space-y-4 sm:space-y-6">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {editing ? (
@@ -254,7 +380,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                       }
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Country</Label>
                       <Input
@@ -303,13 +429,13 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                   </div>
                   {partner.country && (
                     <div className="flex items-center gap-2 text-sm">
-                      <Globe className="size-4 text-muted-foreground" />
+                      <Globe className="size-4 text-muted-foreground shrink-0" />
                       {partner.country.trim()}
                     </div>
                   )}
                   {partner.website && (
                     <div className="flex items-center gap-2 text-sm">
-                      <Globe className="size-4 text-muted-foreground" />
+                      <Globe className="size-4 text-muted-foreground shrink-0" />
                       <a
                         href={
                           partner.website.startsWith("http")
@@ -318,7 +444,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                         }
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary hover:underline"
+                        className="text-primary hover:underline truncate"
                       >
                         {partner.website.trim()}
                       </a>
@@ -326,7 +452,9 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                   )}
                   {partner.notes && (
                     <div className="mt-4">
-                      <p className="text-sm text-muted-foreground">{partner.notes}</p>
+                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                        {partner.notes}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -335,8 +463,8 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Activity</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <CardTitle className="text-base">Activity</CardTitle>
               <Dialog open={activityDialog} onOpenChange={setActivityDialog}>
                 <DialogTrigger>
                   <Button size="sm">
@@ -344,7 +472,7 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                     Add
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Log Activity</DialogTitle>
                   </DialogHeader>
@@ -410,18 +538,18 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                     )
                     .map((activity) => (
                       <div key={activity.id} className="flex gap-3">
-                        <span className="text-lg">
+                        <span className="text-lg shrink-0">
                           {activityIcons[activity.type] || "📌"}
                         </span>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <p className="text-sm font-medium">{activity.title}</p>
                             <span className="text-xs text-muted-foreground">
                               {new Date(activity.created_at).toLocaleDateString()}
                             </span>
                           </div>
                           {activity.description && (
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
                               {activity.description}
                             </p>
                           )}
@@ -431,116 +559,6 @@ export function PartnerDetail({ partner }: { partner: Partner }) {
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">No activity logged yet.</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Contacts</CardTitle>
-              <Dialog open={contactDialog} onOpenChange={setContactDialog}>
-                <DialogTrigger>
-                  <Button size="sm">
-                    <Plus className="size-4 mr-1" />
-                    Add
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add Contact</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleAddContact} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Name</Label>
-                      <Input
-                        value={contactForm.name}
-                        onChange={(e) =>
-                          setContactForm({ ...contactForm, name: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Email</Label>
-                      <Input
-                        type="email"
-                        value={contactForm.email}
-                        onChange={(e) =>
-                          setContactForm({ ...contactForm, email: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Phone</Label>
-                      <Input
-                        value={contactForm.phone}
-                        onChange={(e) =>
-                          setContactForm({ ...contactForm, phone: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Job Title</Label>
-                      <Input
-                        value={contactForm.job_title}
-                        onChange={(e) =>
-                          setContactForm({ ...contactForm, job_title: e.target.value })
-                        }
-                      />
-                    </div>
-                    <Button type="submit" className="w-full" disabled={saving}>
-                      {saving ? "Saving..." : "Add Contact"}
-                    </Button>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            </CardHeader>
-            <CardContent>
-              {partner.contacts.length > 0 ? (
-                <div className="space-y-4">
-                  {partner.contacts.map((contact) => (
-                    <div
-                      key={contact.id}
-                      className="flex items-start justify-between p-3 rounded-lg bg-muted/50"
-                    >
-                      <div className="space-y-1">
-                        {contact.name && (
-                          <div className="flex items-center gap-2 text-sm font-medium">
-                            <User className="size-3" />
-                            {contact.name}
-                          </div>
-                        )}
-                        {contact.email && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Mail className="size-3" />
-                            <a href={`mailto:${contact.email}`} className="hover:text-primary">
-                              {contact.email.trim()}
-                            </a>
-                          </div>
-                        )}
-                        {contact.phone && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Phone className="size-3" />
-                            {contact.phone}
-                          </div>
-                        )}
-                        {contact.job_title && (
-                          <p className="text-xs text-muted-foreground">{contact.job_title}</p>
-                        )}
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        onClick={() => handleDeleteContact(contact.id)}
-                      >
-                        <Trash2 className="size-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">No contacts yet.</p>
               )}
             </CardContent>
           </Card>
