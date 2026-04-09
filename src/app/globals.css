@@ -84,39 +84,182 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* ===== PINK THEME ===== */
+/* ===== HELLO KITTY PINK THEME ===== */
 :root[data-theme="pink"] {
-  --background: oklch(0.995 0.002 349);
-  --foreground: oklch(0.195 0.01 349);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.195 0.01 349);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.195 0.01 349);
-  --primary: oklch(0.718 0.202 349.761);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.958 0.024 349);
-  --secondary-foreground: oklch(0.408 0.123 349);
-  --muted: oklch(0.968 0.012 349);
-  --muted-foreground: oklch(0.508 0.02 349);
-  --accent: oklch(0.948 0.044 349.761);
-  --accent-foreground: oklch(0.408 0.123 349);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.016 349);
-  --input: oklch(0.929 0.016 349);
-  --ring: oklch(0.718 0.202 349.761);
-  --chart-1: oklch(0.718 0.202 349.761);
-  --chart-2: oklch(0.808 0.132 349);
-  --chart-3: oklch(0.628 0.222 349);
-  --chart-4: oklch(0.558 0.202 349);
-  --chart-5: oklch(0.898 0.062 349);
-  --sidebar: oklch(0.985 0.008 349);
-  --sidebar-foreground: oklch(0.195 0.01 349);
-  --sidebar-primary: oklch(0.718 0.202 349.761);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.948 0.044 349.761);
-  --sidebar-accent-foreground: oklch(0.408 0.123 349);
-  --sidebar-border: oklch(0.929 0.016 349);
-  --sidebar-ring: oklch(0.718 0.202 349.761);
+  --background: #fff0f5;
+  --foreground: #8b2252;
+  --card: #fff5f9;
+  --card-foreground: #8b2252;
+  --popover: #fff5f9;
+  --popover-foreground: #8b2252;
+  --primary: #ff69b4;
+  --primary-foreground: #ffffff;
+  --secondary: #ffe4f0;
+  --secondary-foreground: #d63384;
+  --muted: #fce4ec;
+  --muted-foreground: #c2185b;
+  --accent: #ffb6c1;
+  --accent-foreground: #880e4f;
+  --destructive: #ff1744;
+  --border: #f8bbd0;
+  --input: #f8bbd0;
+  --ring: #ff69b4;
+  --chart-1: #ff69b4;
+  --chart-2: #ff1493;
+  --chart-3: #db7093;
+  --chart-4: #ffb6c1;
+  --chart-5: #ff91a4;
+  --sidebar: #ffe4f0;
+  --sidebar-foreground: #8b2252;
+  --sidebar-primary: #ff69b4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffb6c1;
+  --sidebar-accent-foreground: #880e4f;
+  --sidebar-border: #f8bbd0;
+  --sidebar-ring: #ff69b4;
+  --radius: 1rem;
+}
+
+/* Pink theme girly font override */
+:root[data-theme="pink"] body {
+  font-family: var(--font-girly), cursive !important;
+}
+
+:root[data-theme="pink"] h1,
+:root[data-theme="pink"] h2,
+:root[data-theme="pink"] h3,
+:root[data-theme="pink"] [data-slot="card-title"] {
+  font-family: var(--font-girly), cursive !important;
+  letter-spacing: 0.02em;
+}
+
+/* Hello Kitty background decorations */
+:root[data-theme="pink"] body {
+  background-image:
+    url("/hello-kitty/kitty1.png"),
+    url("/hello-kitty/kitty3.png");
+  background-position:
+    bottom 20px right 20px,
+    top 80px left -30px;
+  background-size:
+    120px,
+    100px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Sparkle cursor for pink theme */
+:root[data-theme="pink"] * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ctext x='0' y='16' font-size='16'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E"), auto !important;
+}
+
+/* Pink cards get extra love */
+:root[data-theme="pink"] [data-slot="card"] {
+  border: 2px solid #ffb6c1;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 20px rgba(255, 105, 180, 0.15), 0 0 0 1px rgba(255, 182, 193, 0.3);
+  background: linear-gradient(135deg, #fff5f9 0%, #ffe8f0 100%);
+}
+
+:root[data-theme="pink"] [data-slot="card"]:hover {
+  box-shadow: 0 8px 30px rgba(255, 105, 180, 0.25), 0 0 0 2px rgba(255, 105, 180, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Pink buttons are extra cute */
+:root[data-theme="pink"] [data-slot="button"] {
+  border-radius: 2rem;
+  font-family: var(--font-girly), cursive;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+}
+
+/* Pink input fields */
+:root[data-theme="pink"] [data-slot="input"],
+:root[data-theme="pink"] [data-slot="textarea"] {
+  border-radius: 1rem;
+  border: 2px solid #f8bbd0;
+  background: #fff8fa;
+}
+
+:root[data-theme="pink"] [data-slot="input"]:focus,
+:root[data-theme="pink"] [data-slot="textarea"]:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
+}
+
+/* Badge gets hearts */
+:root[data-theme="pink"] [data-slot="badge"] {
+  border-radius: 2rem;
+}
+
+/* Sidebar Hello Kitty vibes */
+:root[data-theme="pink"] aside {
+  background: linear-gradient(180deg, #ffe4f0 0%, #fff0f5 50%, #ffe4f0 100%) !important;
+  border-right-color: #ffb6c1 !important;
+}
+
+/* Floating hearts animation */
+:root[data-theme="pink"] body::before {
+  content: "💖 🎀 💗 🌸 💝 ✨ 🩷 💕";
+  position: fixed;
+  top: 10px;
+  right: 280px;
+  font-size: 14px;
+  letter-spacing: 8px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  animation: float-hearts 6s ease-in-out infinite;
+}
+
+:root[data-theme="pink"] body::after {
+  content: "🩷 🎀 💖 ✨ 🌸 💗 💝 💕";
+  position: fixed;
+  bottom: 60px;
+  left: 280px;
+  font-size: 12px;
+  letter-spacing: 6px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+  animation: float-hearts 8s ease-in-out infinite reverse;
+}
+
+@keyframes float-hearts {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
+  25% { transform: translateY(-8px) rotate(2deg); opacity: 0.6; }
+  50% { transform: translateY(-3px) rotate(-1deg); opacity: 0.5; }
+  75% { transform: translateY(-10px) rotate(1deg); opacity: 0.7; }
+}
+
+/* Scrollbar pink */
+:root[data-theme="pink"] ::-webkit-scrollbar {
+  width: 10px;
+}
+:root[data-theme="pink"] ::-webkit-scrollbar-track {
+  background: #fff0f5;
+}
+:root[data-theme="pink"] ::-webkit-scrollbar-thumb {
+  background: #ffb6c1;
+  border-radius: 10px;
+  border: 2px solid #fff0f5;
+}
+:root[data-theme="pink"] ::-webkit-scrollbar-thumb:hover {
+  background: #ff69b4;
+}
+
+/* Selection color */
+:root[data-theme="pink"] ::selection {
+  background: #ff69b4;
+  color: white;
+}
+
+/* Dialog gets extra cute */
+:root[data-theme="pink"] [data-slot="dialog-content"] {
+  border: 2px solid #ffb6c1;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #fff8fa 0%, #ffe8f0 100%);
 }
 
 .dark {
@@ -151,41 +294,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
-
-:root[data-theme="pink"].dark,
-:root[data-theme="pink"] .dark {
-  --background: oklch(0.145 0.01 349);
-  --foreground: oklch(0.985 0.008 349);
-  --card: oklch(0.205 0.015 349);
-  --card-foreground: oklch(0.985 0.008 349);
-  --popover: oklch(0.205 0.015 349);
-  --popover-foreground: oklch(0.985 0.008 349);
-  --primary: oklch(0.718 0.202 349.761);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.269 0.04 349);
-  --secondary-foreground: oklch(0.985 0.008 349);
-  --muted: oklch(0.269 0.04 349);
-  --muted-foreground: oklch(0.708 0.04 349);
-  --accent: oklch(0.269 0.04 349);
-  --accent-foreground: oklch(0.985 0.008 349);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0.02 349 / 10%);
-  --input: oklch(1 0.02 349 / 15%);
-  --ring: oklch(0.718 0.202 349.761);
-  --chart-1: oklch(0.718 0.202 349.761);
-  --chart-2: oklch(0.808 0.132 349);
-  --chart-3: oklch(0.628 0.222 349);
-  --chart-4: oklch(0.558 0.202 349);
-  --chart-5: oklch(0.898 0.062 349);
-  --sidebar: oklch(0.205 0.015 349);
-  --sidebar-foreground: oklch(0.985 0.008 349);
-  --sidebar-primary: oklch(0.718 0.202 349.761);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.269 0.04 349);
-  --sidebar-accent-foreground: oklch(0.985 0.008 349);
-  --sidebar-border: oklch(1 0.02 349 / 10%);
-  --sidebar-ring: oklch(0.718 0.202 349.761);
 }
 
 @layer base {
