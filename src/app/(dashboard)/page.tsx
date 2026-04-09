@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Globe, Mail, Activity } from "lucide-react";
+import { Users, Mail, Activity } from "lucide-react";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -12,11 +13,6 @@ export default async function DashboardPage() {
   const { count: contactCount } = await supabase
     .from("contacts")
     .select("*", { count: "exact", head: true });
-
-  const { count: activeCount } = await supabase
-    .from("partners")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "active");
 
   const { count: activityCount } = await supabase
     .from("activities")
@@ -35,8 +31,7 @@ export default async function DashboardPage() {
     .limit(5);
 
   const stats = [
-    { title: "Total Partners", value: partnerCount ?? 0, icon: Users },
-    { title: "Active Partners", value: activeCount ?? 0, icon: Globe },
+    { title: "Partners", value: partnerCount ?? 0, icon: Users },
     { title: "Contacts", value: contactCount ?? 0, icon: Mail },
     { title: "Activities", value: activityCount ?? 0, icon: Activity },
   ];
@@ -48,7 +43,7 @@ export default async function DashboardPage() {
         <p className="text-muted-foreground">Welcome to Kimmy CRM</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-3">
         {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -73,15 +68,16 @@ export default async function DashboardPage() {
             {recentPartners && recentPartners.length > 0 ? (
               <div className="space-y-3">
                 {recentPartners.map((partner: any) => (
-                  <div key={partner.id} className="flex items-center justify-between">
+                  <Link
+                    key={partner.id}
+                    href={`/partners/${partner.id}`}
+                    className="flex items-center justify-between hover:bg-muted/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                  >
                     <div>
                       <p className="text-sm font-medium">{partner.organisation_name}</p>
                       <p className="text-xs text-muted-foreground">{partner.country || "—"}</p>
                     </div>
-                    <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                      {partner.status}
-                    </span>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
