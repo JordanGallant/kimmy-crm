@@ -41,13 +41,15 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center gap-6 items-center">
-            <Image src="/logo-dice.png" alt="DICE Consortium" width={120} height={42} className="object-contain" />
-            <Image src="/logo-p2e.png" alt="P2E International" width={64} height={42} className="object-contain" />
+        <CardHeader className="text-center space-y-5">
+          <div className="flex justify-center items-center gap-8">
+            <Image src="/logo-dice.png" alt="DICE Consortium" width={160} height={56} className="object-contain" />
+            <Image src="/logo-p2e.png" alt="P2E International" width={80} height={56} className="object-contain" />
           </div>
-          <CardTitle className="text-2xl font-bold">Kimmy CRM</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+          <div>
+            <CardTitle className="text-2xl font-bold">Amin CRM</CardTitle>
+            <CardDescription className="mt-1">Sign in to your account</CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

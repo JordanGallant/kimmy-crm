@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kimmy CRM",
+  title: "Amin CRM",
   description: "Partner Relationship Management",
 };
 

@@ -40,7 +40,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <p className="text-muted-foreground">Welcome to Kimmy CRM</p>
+        <p className="text-muted-foreground">Welcome to Amin CRM</p>
       </div>
 
       <div className="grid gap-4 grid-cols-3">

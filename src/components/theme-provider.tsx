@@ -24,7 +24,7 @@ export function ThemeProvider({
   const [theme, setThemeState] = useState<Theme>(initialTheme);
 
   useEffect(() => {
-    const saved = localStorage.getItem("kimmy-theme") as Theme | null;
+    const saved = localStorage.getItem("amin-crm-theme") as Theme | null;
     if (saved) {
       setThemeState(saved);
       document.documentElement.setAttribute("data-theme", saved === "default" ? "" : saved);
@@ -33,7 +33,7 @@ export function ThemeProvider({
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem("kimmy-theme", newTheme);
+    localStorage.setItem("amin-crm-theme", newTheme);
     document.documentElement.setAttribute(
       "data-theme",
       newTheme === "default" ? "" : newTheme
