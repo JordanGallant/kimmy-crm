@@ -42,10 +42,11 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <Image src="/logo.png" alt="Kimmy CRM" width={80} height={80} className="rounded-xl" />
+          <div className="flex justify-center gap-6 items-center">
+            <Image src="/logo-dice.png" alt="DICE Consortium" width={120} height={42} className="object-contain" />
+            <Image src="/logo-p2e.png" alt="P2E International" width={64} height={42} className="object-contain" />
           </div>
-          <CardTitle className="text-2xl font-bold text-primary">Kimmy CRM</CardTitle>
+          <CardTitle className="text-2xl font-bold">Kimmy CRM</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>

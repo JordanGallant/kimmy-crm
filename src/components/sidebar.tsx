@@ -45,9 +45,15 @@ function SidebarContent({
 
   return (
     <>
-      <div className="p-6 flex items-center gap-3">
-        <Image src="/logo.png" alt="Kimmy CRM" width={40} height={40} className="rounded-lg" />
-        <h1 className="text-xl font-bold text-primary">Kimmy CRM</h1>
+      <div className="p-5 space-y-3">
+        <div className="flex items-center gap-2.5">
+          <Image src="/logo.png" alt="Kimmy CRM" width={32} height={32} className="rounded-md" />
+          <h1 className="text-lg font-semibold tracking-tight">Kimmy CRM</h1>
+        </div>
+        <div className="flex items-center gap-3 px-1">
+          <Image src="/logo-dice.png" alt="DICE Consortium" width={80} height={28} className="object-contain" />
+          <Image src="/logo-p2e.png" alt="P2E International" width={48} height={28} className="object-contain" />
+        </div>
       </div>
       <Separator />
       <nav className="flex-1 p-4 space-y-1">
@@ -111,8 +117,8 @@ export function Sidebar({ user, profile }: SidebarProps) {
         <button onClick={() => setOpen(true)}>
           <Menu className="size-6" />
         </button>
-        <Image src="/logo.png" alt="Kimmy CRM" width={28} height={28} className="rounded-md" />
-        <h1 className="text-lg font-bold text-primary">Kimmy CRM</h1>
+        <Image src="/logo.png" alt="Kimmy CRM" width={24} height={24} className="rounded-md" />
+        <span className="text-base font-semibold tracking-tight">Kimmy CRM</span>
       </div>
 
       {/* Mobile overlay */}

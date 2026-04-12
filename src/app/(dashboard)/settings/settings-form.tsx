@@ -18,8 +18,8 @@ type Profile = {
 };
 
 const themes = [
-  { id: "default" as const, name: "Default", color: "bg-zinc-800", emoji: "" },
-  { id: "pink" as const, name: "Hello Kitty", color: "bg-pink-500", emoji: "🎀 💖" },
+  { id: "default" as const, name: "Default", color: "bg-zinc-800" },
+  { id: "pink" as const, name: "Rose", color: "bg-pink-600" },
 ];
 
 export function SettingsForm({ profile }: { profile: Profile | null }) {
@@ -115,7 +115,7 @@ export function SettingsForm({ profile }: { profile: Profile | null }) {
                 }`}
               >
                 <div className={`size-8 rounded-full ${t.color}`} />
-                <span className="font-medium text-sm">{t.emoji} {t.name} {t.emoji}</span>
+                <span className="font-medium text-sm">{t.name}</span>
               </button>
             ))}
           </div>
