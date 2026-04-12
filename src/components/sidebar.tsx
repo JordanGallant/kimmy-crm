@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -45,12 +44,8 @@ function SidebarContent({
 
   return (
     <>
-      <div className="p-5 space-y-4">
+      <div className="p-5">
         <h1 className="text-lg font-semibold tracking-tight">Amin CRM</h1>
-        <div className="flex items-center gap-4">
-          <Image src="/logo-dice.png" alt="DICE Consortium" width={110} height={40} className="object-contain" />
-          <Image src="/logo-p2e.png" alt="P2E International" width={56} height={40} className="object-contain" />
-        </div>
       </div>
       <Separator />
       <nav className="flex-1 p-4 space-y-1">
